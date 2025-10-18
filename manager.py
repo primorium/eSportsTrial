@@ -53,14 +53,14 @@ class TournamentManager:
             match.winner, match.loser = match.team1, match.team2
         else:
             match.winner, match.loser = match.team2, match.team1
-            match.status = "Completed"
+        match.status = "Completed"
+        self.log(
+            f"Confirm Event: {match.winner.name if match.winner else 'TBD'} confirmed as winner.")
+        self.bracket.advance(match)
+        if match.winner:
+            match.winner.wins += 1
+        if match.loser:
+            match.loser.losses += 1
+        if self.bracket.completed:
             self.log(
-                f"Confirm Event: {match.winner.name if match.winner else 'TBD'} confirmed as winner.")
-            self.bracket.advance(match)
-            if match.winner:
-                match.winner.wins += 1
-            if match.loser:
-                match.loser.losses += 1
-            if self.bracket.completed:
-                self.log(
-                    f"Final Event: Champion declared: {self.bracket.champion.name if self.bracket.champion else 'TBD'}.")
+                f"Final Event: Champion declared: {self.bracket.champion.name if self.bracket.champion else 'TBD'}.")
